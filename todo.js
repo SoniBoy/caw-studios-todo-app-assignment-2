@@ -40,16 +40,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const clearTextInput = () => {
     const input = document.getElementById("input");
     input.value = "";
+    todoText = "";
   };
 
-  const addTodo = () => {
+  // to prevent empty todo being added in the list
+  const preventEmptySaveCheck = (callback) => {
+    return () => {
+      if (todoText) {
+        callback();
+      }
+    };
+  };
+
+  const addTodo = preventEmptySaveCheck(() => {
     todos.push({
       text: todoText,
       done: false,
     });
     clearTextInput();
     renderTodoList();
-  };
+  });
 
   const deleteTodo = (todoIdx) => {
     return () => {
